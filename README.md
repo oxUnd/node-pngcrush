@@ -6,7 +6,7 @@ node-pngcrush是一个node的插件，它把pngcrush内嵌到了插件中，而�
 
     npm install -g node-pngcrush
 
-##使用
+##!使用
 
 ```javascript
 
