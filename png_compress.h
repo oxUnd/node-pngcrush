@@ -3,10 +3,7 @@
 
 #include <node.h>
 
-typedef struct {
-    char *key;
-    char *value;
-} opt_struct;
+#define BUFFER_SIZE 1024
 
 class PngCompress : public node::ObjectWrap {
 public:

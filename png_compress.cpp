@@ -83,15 +83,15 @@ Handle<Value> PngCompress::Compress(const Arguments& args) {
     Local<Function> callback = Local<Function>::Cast(args[2]);
 
     Buffer *buffer;
-    char str_buffer[1024];
-    memset(str_buffer, '\0', 1024);
+    char str_buffer[BUFFER_SIZE];
+    memset(str_buffer, '\0', BUFFER_SIZE);
 
     opt->WriteUtf8(str_buffer);
 
     char *argv[32] = {""};
 
-    char token[64];
-    memset(token, '\0', 64);
+    char token[BUFFER_SIZE];
+    memset(token, '\0', BUFFER_SIZE);
 
     int i = 0, argc = 0, k = 0, len = 0;
     while(str_buffer[i] != '\0') {
@@ -102,6 +102,8 @@ Handle<Value> PngCompress::Compress(const Arguments& args) {
             argv[argc] = (char*) malloc(len + 1);
             memset(argv[argc], '\0', len + 1);
             memcpy(argv[argc], token, len + 1);
+            //reset token
+            memset(token, '\0', BUFFER_SIZE);
         } else {
             token[k++] = str_buffer[i];
         }
