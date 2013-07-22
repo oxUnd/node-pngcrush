@@ -8,6 +8,11 @@ function PngCompress(buffer) {
 
 PngCompress.prototype = {
     option: function (opt) {
+        if (opt.params) {
+            opt = opt.params;
+        } else {
+            opt = '';
+        }
         this._option = opt;
         return this;
     },

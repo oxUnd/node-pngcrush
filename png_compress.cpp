@@ -1,6 +1,7 @@
 #include "pngcrush/png.h"
 #include "pngcrush/pngcrush.h"
 #include "png_compress.h"
+#include <stdlib.h>
 #include <node_buffer.h>
 
 using namespace v8;
