@@ -1359,7 +1359,7 @@ void show_result(void);
 png_uint_32 png_measure_idat(png_structp png_ptr);
 
 #ifdef PNGCRUSH_COUNT_COLORS
-int count_colors(FILE * fpin);
+int count_colors(user_png_structp in_bf);
 #endif
 void print_version_info(void);
 void print_usage(int retval);
@@ -2121,11 +2121,7 @@ void show_result(void)
 
 //int main(int argc, char *argv[])
 user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[]) {
-    user_png_structp out_buffer = (user_png_structp) malloc(sizeof(user_png_struct));
-
-    memset(out_buffer, '\0', sizeof(user_png_struct));
-    verbose = 0;
-
+    user_png_structp out_buffer;
     png_uint_32 y;
     int bit_depth, color_type;
     int num_pass, pass;
@@ -2153,6 +2149,12 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
     do_color_count = 0;
     do_color_count = do_color_count;    /* silence compiler warning */
 #endif
+
+    out_buffer = (user_png_structp) malloc(sizeof(user_png_struct));
+
+    memset(out_buffer, '\0', sizeof(user_png_struct));
+
+    verbose = 0;
 
     t_start = (TIME_T) clock();
 
@@ -3252,89 +3254,91 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
         }
         if (!already_crushed && !image_is_immutable)
         {
-//#if 0
-//#ifdef PNGCRUSH_COUNT_COLORS
-//        reduce_to_gray = 0;
-//        it_is_opaque = 0;
-//        output_color_type = input_color_type;
-//        if (do_color_count)
-//        {
-//            if (force_output_color_type == 8 && (input_color_type == 2 ||
-//                                                 (input_color_type == 3) ||
-//                                                 input_color_type == 4
-//                                                 || input_color_type == 6))
-//            /* check for unused alpha channel or single transparent color */
-//            {
-//                int alpha_status;
-//                P1( "Opening file %s for alpha check\n", inname);
-//
-//                if ((fpin = FOPEN(inname, "rb")) == NULL)
-//                {
-//                    fprintf(STDERR, "Could not find file: %s\n", inname);
-//                    continue;
-//                }
-//                number_of_open_files++;
-//
-//                alpha_status = count_colors(fpin);
-//                if (num_rgba < 257) {
-//                    P1("Finished counting colors. num_rgba=%d\n",
-//                       num_rgba);
-//                }
-//                else
-//                {
-//                    P1("Finished counting colors. num_rgba is more than 256\n");
-//                }
-//                alpha_status = alpha_status;    /* silence compiler warning. */
-//
-//                FCLOSE(fpin);
-//
-//                if (it_is_opaque)
-//                {
-//                    if (output_color_type == 4)
-//                        output_color_type = 0;
-//                    else if (output_color_type == 6)
-//                        output_color_type = 2;
-//                }
-//                if (reduce_to_gray)
-//                {
-//                    if (output_color_type == 2)
-//                        output_color_type = 0;
-//                    else if (output_color_type == 6)
-//                        output_color_type = 4;
-//                }
-//            }
-//#if 0 /* TO DO */
-//            if (output_color_type == 0)
-//                /* see if bit depth can be reduced */
-//            {
-//                /* TO DO */
-//            }
-//
-//            if (input_color_type == 2)
-//                /* check for 256 or fewer colors */
-//            {
-//                /* TO DO */
-//            }
-//
-//            if (input_color_type == 3)
-//                /* check for unused palette entries */
-//            {
-//                /* TO DO */
-//            }
-//#endif /* 0, TODO */
-//            if (force_output_color_type == 8
-//                && input_color_type != output_color_type)
-//            {
-//                P1("setting output color type to %d\n", output_color_type);
-//                force_output_color_type = output_color_type;
-//            }
-//        }
-//#else
-//        if (do_color_count)
-//            printf("   color counting (-cc option) is not supported.\n");
-//#endif /* PNGCRUSH_COUNT_COLORS */
-//
-//#endif
+
+#ifdef PNGCRUSH_COUNT_COLORS
+       reduce_to_gray = 0;
+       it_is_opaque = 0;
+       output_color_type = input_color_type;
+       if (do_color_count)
+       {
+           if (force_output_color_type == 8 && (input_color_type == 2 ||
+                                                (input_color_type == 3) ||
+                                                input_color_type == 4
+                                                || input_color_type == 6))
+           /* check for unused alpha channel or single transparent color */
+           {
+               int alpha_status;
+               P1( "Opening file %s for alpha check\n", inname);
+
+               // if ((fpin = FOPEN(inname, "rb")) == NULL)
+               // {
+               //     fprintf(STDERR, "Could not find file: %s\n", inname);
+               //     continue;
+               // }
+               
+               input_buffer->current = 0;
+
+               number_of_open_files++;
+
+               alpha_status = count_colors(input_buffer);
+               if (num_rgba < 257) {
+                   P1("Finished counting colors. num_rgba=%d\n",
+                      num_rgba);
+               }
+               else
+               {
+                   P1("Finished counting colors. num_rgba is more than 256\n");
+               }
+               alpha_status = alpha_status;    /* silence compiler warning. */
+
+               FCLOSE(fpin);
+
+               if (it_is_opaque)
+               {
+                   if (output_color_type == 4)
+                       output_color_type = 0;
+                   else if (output_color_type == 6)
+                       output_color_type = 2;
+               }
+               if (reduce_to_gray)
+               {
+                   if (output_color_type == 2)
+                       output_color_type = 0;
+                   else if (output_color_type == 6)
+                       output_color_type = 4;
+               }
+           }
+#if 0 /* TO DO */
+           if (output_color_type == 0)
+               /* see if bit depth can be reduced */
+           {
+               /* TO DO */
+           }
+
+           if (input_color_type == 2)
+               /* check for 256 or fewer colors */
+           {
+               /* TO DO */
+           }
+
+           if (input_color_type == 3)
+               /* check for unused palette entries */
+           {
+               /* TO DO */
+           }
+#endif /* 0, TODO */
+           if (force_output_color_type == 8
+               && input_color_type != output_color_type)
+           {
+               P1("setting output color type to %d\n", output_color_type);
+               force_output_color_type = output_color_type;
+           }
+       }
+#else
+       if (do_color_count)
+           printf("   color counting (-cc option) is not supported.\n");
+#endif /* PNGCRUSH_COUNT_COLORS */
+
 
         if (plte_len > 0 && force_output_bit_depth == 0)
           {
@@ -6256,7 +6260,7 @@ png_uint_32 png_measure_idat(png_structp png_ptr)
 
 #ifdef PNGCRUSH_COUNT_COLORS
 #define USE_HASHCODE
-int count_colors(FILE * fp_in)
+int count_colors(user_png_structp in_bf)
 {
     /* Copyright (C) 2000-2002,2006 Glenn Randers-Pehrson (glennrp@users.sf.net)
        See notice in pngcrush.c for conditions of use and distribution */
@@ -6334,11 +6338,11 @@ int count_colors(FILE * fp_in)
 #endif
             end_info_ptr = NULL;
 
-#ifdef PNG_STDIO_SUPPORTED
+//#ifdef PNG_STDIO_SUPPORTED
             png_init_io(read_ptr, fp_in);
-#else
-            png_set_read_fn(read_ptr, (png_voidp) fp_in, (png_rw_ptr) NULL);
-#endif
+//#else
+            png_set_read_fn(read_ptr, (png_voidp) in_bf, (png_rw_ptr) pngcrush_default_read_data);
+//#endif
 
             {
 #ifdef PNGCRUSH_LOCO
@@ -7349,9 +7353,11 @@ int main(int argc, char *argv[]) {
     int len = 0;
     int p_ptr = 0;
     FILE *fpin;
+    struct stat st;
+    png_size_t filesize;
+    png_bytep image_buffer;
 
     char * inname = argv[1];
-
 
     fpin = fopen(inname, "rb");
 
@@ -7359,19 +7365,16 @@ int main(int argc, char *argv[]) {
       return 1;
     }
 
-    struct stat st;
     stat(inname, &st);
 
-    png_size_t filesize = st.st_size;
+    filesize = st.st_size;
 
     chunk_count = filesize / read_step;
     if (filesize % read_step != 0) {
         chunk_count++;
     }
 
-
-
-    png_bytep image_buffer = (png_bytep) malloc(sizeof(png_byte) * filesize);
+    image_buffer = (png_bytep) malloc(sizeof(png_byte) * filesize);
     if (image_buffer == NULL) {
         return 1;
     }
