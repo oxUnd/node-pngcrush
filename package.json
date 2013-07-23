@@ -1,6 +1,6 @@
 {
   "name": "node-pngcrush",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "The node-pngcrush is an addon of node, as a readable/writable stream",
   "main": "index.js",
   "directories": {
