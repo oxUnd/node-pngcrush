@@ -8,6 +8,7 @@
 /build
 /build.sh
 /build.js
+/binding.debug.js
 
 .DS_Store
 
