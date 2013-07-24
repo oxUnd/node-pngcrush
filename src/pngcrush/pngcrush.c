@@ -1612,7 +1612,7 @@ png_defaultwrite_data(png_structp png_ptr, png_bytep data, png_size_t length)
       image->length = len;
       image->current = 0;
     }else if((len = image->current + length) > image->length){
-      len = (len < PNG_BIG_FILE_SIZE) ? (len << 1) :(len + PNG_INIT_FILE_SIZE);
+      //len = (len < PNG_BIG_FILE_SIZE) ? (len << 1) :(len + PNG_INIT_FILE_SIZE);
       if((image->data = (png_bytep) realloc(image->data, len)) == NULL){
         png_error(png_ptr, "Out of memory.");
         return;

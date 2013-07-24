@@ -96,6 +96,9 @@ Handle<Value> PngCompress::Compress(const Arguments& args) {
 
     int i = 0, argc = 0, k = 0, len = 0;
     while(str_buffer[i] != '\0') {
+        if (argc >= 30) {
+            break;
+        }
         if (str_buffer[i] == ' ') {
             argc++;
             k = 0;
