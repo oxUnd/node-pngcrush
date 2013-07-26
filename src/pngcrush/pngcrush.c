@@ -3236,7 +3236,7 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
 //            }
 //
            if (idat_length[0] == 0)
-               continue;
+               break;
 //#endif
 
         }
@@ -3275,7 +3275,7 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
                //     fprintf(STDERR, "Could not find file: %s\n", inname);
                //     continue;
                // }
-               
+
                input_buffer->current = 0;
 
                number_of_open_files++;
@@ -3571,7 +3571,7 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
 //                        we simply check the size instead.  It is possible that
 //                        we will erroneously reject the attempt when inputsize
 //                        and outputsize are equal, for different files
-                     
+
 //                     (stat_in.st_size == stat_out.st_size) &&
 // #else
 //                     (stat_in.st_ino == stat_out.st_ino) &&
@@ -3633,7 +3633,7 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
 # endif
                 }
 #endif /* PNG_SET_USER_LIMITS_SUPPORTED */
-                
+
 //#if 0
 //                /* Use a smaller decompression buffer for speed */
 //                png_set_compression_buffer_size(read_ptr,
@@ -5659,7 +5659,7 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
             read_ptr = NULL;
             write_ptr = NULL;
             //FCLOSE(fpin);
-            
+
             input_buffer->current = 0;
 
             if (nosave == 0)
@@ -5726,7 +5726,7 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
         //     FCLOSE(fpout);
         //     setfiletype(outname);
         // }
-        
+
         out_buffer->current = 0;
         input_buffer->current = 0;
 
@@ -5833,8 +5833,8 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
 
 } /* end of main() */
 
-                           
-                           
+
+
 png_uint_32 measure_idats_bf(user_png_structp input_buffer)
 {
     /* Copyright (C) 1999-2002,2006 Glenn Randers-Pehrson (glennrp@users.sf.net)
@@ -7390,7 +7390,7 @@ int main(int argc, char *argv[]) {
     input_buffer->length = filesize;
     input_buffer->data = image_buffer;
     input_buffer->current = 0;
-    
+
     out_buffer = png_reduce(input_buffer, argc, argv);
 
     fpin = fopen("output.png", "wb");
