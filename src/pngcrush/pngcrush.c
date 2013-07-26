@@ -2954,7 +2954,7 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
                 default_compression_window);
         default_compression_window = 12;
     }
-    names = 1;
+
 //    if (pngcrush_mode == DEFAULT_MODE)
 //    {
 //        if (argc - names == 2)
@@ -2982,6 +2982,9 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
 //
 //    }
 
+    if (argc - names == 1) {
+        inname = argv[names];
+    }
     for (ia = 0; ia < 256; ia++)
         trns_array[ia]=255;
 
@@ -3235,8 +3238,12 @@ user_png_structp png_reduce(user_png_structp input_buffer, int argc, char *argv[
 //                fflush(STDERR);
 //            }
 //
-           if (idat_length[0] == 0)
-               break;
+            if (idat_length[0] == 0) {
+                //检查出错，直接原数据吐出
+                out_buffer->data = input_buffer->data;
+                out_buffer->length = input_buffer->length;
+                break;
+            }
 //#endif
 
         }
@@ -7356,8 +7363,18 @@ int main(int argc, char *argv[]) {
     struct stat st;
     png_size_t filesize;
     png_bytep image_buffer;
+    char * inname;
 
-    char * inname = argv[1];
+    if (argc < 2) {
+        return 1;
+    }
+
+    if (argc == 2)
+    {
+        inname = argv[1];
+    } else {
+        inname = argv[argc - 2];
+    }
 
     fpin = fopen(inname, "rb");
 
@@ -7390,6 +7407,14 @@ int main(int argc, char *argv[]) {
     input_buffer->length = filesize;
     input_buffer->data = image_buffer;
     input_buffer->current = 0;
+
+    if (argc == 3) {
+        argv[argc - 1] = "output.png";
+    } else if (argc > 3) {
+        argv[argc - 2] = argv[argc - 1];
+        argv[argc-1] = NULL;
+        argc --;
+    }
 
     out_buffer = png_reduce(input_buffer, argc, argv);
 

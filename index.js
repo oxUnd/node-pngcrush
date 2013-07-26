@@ -9,9 +9,9 @@ function PngCompress(buffer) {
 PngCompress.prototype = {
     option: function (opt) {
         if (opt.params) {
-            opt = opt.params;
+            opt = opt.filename ? opt.params + ' ' + opt.filename : opt.params;
         } else {
-            opt = '';
+            opt = opt.filename || '';
         }
         this._option = opt;
         return this;
