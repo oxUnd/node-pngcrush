@@ -18,7 +18,6 @@ PngCompress.prototype = {
     },
     compress: function(buffer, cb) {
         if (cb) this._callback = cb;
-        console.log('fuck');
         out = this._handle.compress(buffer, this._option, this._callback);
         return out;
     }
