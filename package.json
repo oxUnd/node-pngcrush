@@ -1,14 +1,13 @@
 {
   "name": "node-pngcrush",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "The node-pngcrush is an addon of node, as a readable/writable stream",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "(node ./install.js 2> builderror.log) || (exit 0)"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
