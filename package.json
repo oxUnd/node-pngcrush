@@ -1,6 +1,6 @@
 {
   "name": "node-pngcrush",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The node-pngcrush is an addon of node, as a readable/writable stream",
   "main": "index.js",
   "directories": {
@@ -17,6 +17,9 @@
     "pngcrush",
     "png"
   ],
+  "devDependencies": {
+      "nan": "1.6.2"
+  },
   "author": "xiangshouding <xiangshouding@baidu.com>",
   "license": "MIT",
   "gypfile": true,

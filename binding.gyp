@@ -40,6 +40,10 @@
                     "src/pngcrush/pngwrite.c",
                     "src/pngcrush/pngwtran.c",
                     "src/pngcrush/pngwutil.c"
+            ],
+            
+            "include_dirs": [
+                "<!(node -e \"require('nan')\")"
             ]
     }]
 }

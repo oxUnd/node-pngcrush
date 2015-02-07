@@ -3,7 +3,7 @@
 #include "png_compress.h"
 #include <stdlib.h>
 #include <string.h>
-#include <node_buffer.h>
+#include <nan.h>
 
 using namespace v8;
 using namespace node;
@@ -38,71 +38,60 @@ int parseArgv(char *args, char *argv[], int p_size) {
 }
 
 void PngCompress::Init(Handle<Object> exports) {
-    HandleScope scope;
+    NanScope();
     
-    Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
-    Local<String> name = String::NewSymbol("PngCompress");
+    Local<FunctionTemplate> tpl = NanNew<FunctionTemplate>(New);
+    tpl->SetClassName(NanNew("PngCompress"));
 
-    constructor = Persistent<FunctionTemplate>::New(tpl);
     // ObjectWrap uses the first internal field to store the wrapped pointer.
-    constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(name);
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     // Add all prototype methods, getters and setters here.
-    NODE_SET_PROTOTYPE_METHOD(constructor, "compress", Compress);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "compress", Compress);
 
     // This has to be last, otherwise the properties won't show up on the
     // object in JavaScript.
-    exports->Set(name, constructor->GetFunction());
+    exports->Set(NanNew("PngCompress"), tpl->GetFunction());
 }
 
 PngCompress::PngCompress():ObjectWrap() {
 }
 
-Handle<Value> PngCompress::New(const Arguments& args) {
-    HandleScope scope;
+NAN_METHOD(PngCompress::New) {
+    NanScope();
 
     if (!args.IsConstructCall()) {
-        return ThrowException(Exception::TypeError(
-            String::New("Use the new operator to create instances of this object."))
+        return NanThrowTypeError(
+            "Use the new operator to create instances of this object."
         );
     }
 
-      // Creates a new instance object of this type and wraps it.
     PngCompress* obj = new PngCompress();
-    
-    //PngCompress::in_stream = (png_bytep) Buffer::Data(args[0]->ToObject());
-    //PngCompress::in_length = Buffer::Length(args[0]->ToObject());
-    //PngCompress::opt = args[1]->ToString();
-    //PngCompress::callback = Local<Function>::Cast(args[2]);
 
     obj->Wrap(args.This());
 
-    return args.This();
+    NanReturnValue(args.This());
 }
 
 
-Handle<Value> PngCompress::Compress(const Arguments& args) {
-    HandleScope scope;
+NAN_METHOD(PngCompress::Compress) {
+    NanScope();
 
     if (args.Length() != 3) {
-        return ThrowException(Exception::TypeError(
-                String::New("Invalid argument, Need three arguments!")
-            )
+        return NanThrowTypeError(
+            "Invalid argument, Need three arguments!"
         );
     }
 
     if (!Buffer::HasInstance(args[0])) {
-        return ThrowException(Exception::TypeError(
-                String::New("First argument must be a buffer.")
-            )
+        return NanThrowTypeError(
+            "First argument must be a buffer."
         );
     }
 
     if (!args[2]->IsFunction()) {
-        return ThrowException(Exception::TypeError(
-                String::New("Third argument must be a callback function.")
-            )
+        return NanThrowTypeError(
+            "Third argument must be a callback function."
         );
     }
 
@@ -111,7 +100,6 @@ Handle<Value> PngCompress::Compress(const Arguments& args) {
     Local<String> opt = args[1]->ToString();
     Local<Function> callback = Local<Function>::Cast(args[2]);
 
-    Buffer *buffer;
     int i;
     char *argv[32];
     int argc;
@@ -136,9 +124,8 @@ Handle<Value> PngCompress::Compress(const Arguments& args) {
     user_png_structp in_buffer;
     in_buffer = (user_png_structp)malloc(sizeof(user_png_struct));
     if (in_buffer == NULL) {
-        return ThrowException(Exception::TypeError(
-                String::New("malloc fail!")
-            )
+        return NanThrowTypeError(
+            "malloc fail!"
         );
     }
     
@@ -150,7 +137,7 @@ Handle<Value> PngCompress::Compress(const Arguments& args) {
 
     out_buffer = png_reduce(in_buffer, argc, argv);
 
-    buffer = Buffer::New((char *)out_buffer->data, out_buffer->length);
+    Local<Object> buffer = NanNewBufferHandle((char *)out_buffer->data, out_buffer->length);
 
     free(in_buffer);
     free(out_buffer);
@@ -159,9 +146,7 @@ Handle<Value> PngCompress::Compress(const Arguments& args) {
         free(argv[i]);
     }
 
-    return scope.Close(
-        buffer->handle_
-    );
+    NanReturnValue(buffer);
 }
 
 void RegisterModule(Handle<Object> exports) {
