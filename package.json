@@ -17,7 +17,7 @@
     "pngcrush",
     "png"
   ],
-  "devDependencies": {
+  "dependencies": {
       "nan": "1.6.2"
   },
   "author": "xiangshouding <xiangshouding@baidu.com>",
