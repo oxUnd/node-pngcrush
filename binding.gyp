@@ -1,6 +1,6 @@
 {
     "targets": [{
-        "target_name": "png_compress",
+        "target_name": "addon",
         "cflags": [
             "-g",
             "-I.",
@@ -12,7 +12,8 @@
             "-DNO_ALONE"
         ],
         "sources": [
-            "src/png_compress.cpp",
+            "src/binding.cpp",
+            "src/Compress.cpp",
             "src/pngcrush/adler32.c",
             "src/pngcrush/compress.c",
             "src/pngcrush/crc32.c",
@@ -40,11 +41,6 @@
             "src/pngcrush/pngwrite.c",
             "src/pngcrush/pngwtran.c",
             "src/pngcrush/pngwutil.c"
-        ],
-
-        "include_dirs": [
-            "<!(node -e \"require('nan')\")",
-            "./src/pngcrush"
         ]
     }]
 }

@@ -2,7 +2,13 @@
 
 var fs = require('fs');
 
-var buildModule = __dirname + '/build/Release/png_compress.node';
+var addonName = 'png_compress';
+var nodeVersion = process.versions.node;
+if (compiler(nodeVersion, '4.0.0') != -1) {
+    addonName = 'addon';
+}
+
+var buildModule = __dirname + '/build/Release/' + addonName + '.node';
 
 if (fs.existsSync(buildModule)) {
     try {
