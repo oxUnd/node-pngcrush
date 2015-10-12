@@ -54,7 +54,7 @@ for ( var i in bindingMap)  {
 
         if (compiler(versions[0], cur) <= 0 && compiler(versions[1], cur) >= 0) {
             try {
-                module.exports = require('./bindings/'+ process.platform + '/' + process.arch + '/' + target + '/png_compress.node');
+                module.exports = require('./bindings/'+ process.platform + '/' + process.arch + '/' + target + '/' + addonName + '.node');
                 return;
             } catch ( e ) {
                 throw new Error('Can\'t load the addon. Issue to: ' + bugUrl + ' ' + e.stack);
