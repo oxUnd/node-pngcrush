@@ -2,13 +2,13 @@
 
 var fs = require('fs');
 
-var addonName = 'png_compress';
+var bindName = 'png_compress';
 var nodeVersion = process.versions.node;
 if (compiler(nodeVersion, '4.0.0') != -1) {
-    addonName = 'addon';
+    bindName = 'addon';
 }
 
-var buildModule = __dirname + '/build/Release/' + addonName + '.node';
+var buildModule = __dirname + '/build/Release/' + bindName + '.node';
 
 if (fs.existsSync(buildModule)) {
     try {
@@ -54,7 +54,7 @@ for ( var i in bindingMap)  {
 
         if (compiler(versions[0], cur) <= 0 && compiler(versions[1], cur) >= 0) {
             try {
-                module.exports = require('./bindings/'+ process.platform + '/' + process.arch + '/' + target + '/' + addonName + '.node');
+                module.exports = require('./bindings/'+ process.platform + '/' + process.arch + '/' + target + '/' + bindName + '.node');
                 return;
             } catch ( e ) {
                 throw new Error('Can\'t load the addon. Issue to: ' + bugUrl + ' ' + e.stack);
