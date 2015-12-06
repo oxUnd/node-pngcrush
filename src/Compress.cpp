@@ -141,9 +141,10 @@ namespace Compress {
 
     out = png_reduce(in, argc, argv);
 
-    MaybeLocal<Object> maybeBuffer = node::Buffer::New(args.GetIsolate(), (char *)out->data, (size_t)out->length);
+    MaybeLocal<Object> maybeBuffer = node::Buffer::New(args.GetIsolate(), (size_t)out->length);
     Local<Object> buffer;
     maybeBuffer.ToLocal(&buffer);
+    memcpy(node::Buffer::Data(buffer), out->data, (size_t)out->length);
 
     for (i = 0; i < 32; i++) { free(argv[i]); } //free argv
     free(in);
