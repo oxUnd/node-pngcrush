@@ -114,7 +114,7 @@ namespace Compress {
 
   void Compress::Invoke(const FunctionCallbackInfo<Value> &args) {
     user_png_structp in = (user_png_structp) malloc(sizeof(user_png_struct));
-    user_png_structp out = (user_png_structp) malloc(sizeof(user_png_struct));
+    user_png_structp out;
     int i;
     int argc;
     char *argv[32];
@@ -131,13 +131,13 @@ namespace Compress {
 
     argc = ParseArgs(c_args, 32, argv);
 
+    //reset
+    memset(in, '\0', sizeof(user_png_struct));
+
     //init
     in->data = (png_bytep) obj->_buf;
     in->length = obj->_buf_length;
     in->current = 0;
-
-    //reset
-    memset(out, '\0', sizeof(user_png_struct));
 
     out = png_reduce(in, argc, argv);
 
