@@ -12,8 +12,6 @@
             "-DNO_ALONE"
         ],
         "sources": [
-            "src/binding.cpp",
-            "src/Compress.cpp",
             "src/pngcrush/adler32.c",
             "src/pngcrush/compress.c",
             "src/pngcrush/crc32.c",
@@ -40,7 +38,9 @@
             "src/pngcrush/pngwio.c",
             "src/pngcrush/pngwrite.c",
             "src/pngcrush/pngwtran.c",
-            "src/pngcrush/pngwutil.c"
+            "src/pngcrush/pngwutil.c",
+            "src/binding.cpp",
+            "src/Compress.cpp"
         ]
     }]
 }

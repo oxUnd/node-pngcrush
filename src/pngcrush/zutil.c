@@ -88,7 +88,8 @@ uLong ZEXPORT zlibCompileFlags()
 #ifdef Z_SOLO
     return flags;
 #else
-    return flags + gzflags();
+    // return flags + gzflags(); // 由于编译固定使用-DZ_SOLO，可以无视这个分支
+    return flags;
 #endif
 }
 
