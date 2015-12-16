@@ -1032,7 +1032,14 @@ png_uint_32 pngcrush_crc;
 
 #if !defined(__TURBOC__) && !defined(_MSC_VER) && !defined(_MBCS) && \
     !defined(__riscos)
-#  include <unistd.h>
+#  if ( defined(_Windows) || defined(_WINDOWS) || defined(WIN32) ||  \
+     defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__) || \
+     defined(__DJGPP__) )
+#    include <io.h>  
+#    include <process.h>  
+#  else
+#     include <unistd.h>
+#  endif
 #endif
 
 #ifndef __riscos
