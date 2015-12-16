@@ -1032,13 +1032,26 @@ png_uint_32 pngcrush_crc;
 
 #if !defined(__TURBOC__) && !defined(_MSC_VER) && !defined(_MBCS) && \
     !defined(__riscos)
-#  include <unistd.h>
+#  if ( defined(_Windows) || defined(_WINDOWS) || defined(WIN32) ||  \
+     defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__) || \
+     defined(__DJGPP__) )
+#    include <io.h>  
+#    include <process.h>  
+#  else
+#     include <unistd.h>
+#  endif
 #endif
 
 #ifndef __riscos
 #  include <sys/types.h>
 #  include <sys/stat.h>
-#  include <utime.h>
+#  if ( defined(_Windows) || defined(_WINDOWS) || defined(WIN32) ||  \
+     defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__) || \
+     defined(__DJGPP__) )
+#     include <sys/utime.h> // windows编译兼容
+#  else
+#     include <utime.h>
+#  endif
 #endif
 
 #include <stdio.h>
@@ -1081,17 +1094,25 @@ png_uint_32 pngcrush_crc;
 #  include <mem.h>
 #endif
 
+
+
 #ifndef CLOCKS_PER_SEC
 #  define CLOCKS_PER_SEC 1000
 #endif
 
+
+
 #ifdef __STDC__
 #  define TIME_T clock_t
 #else
-#  if CLOCKS_PER_SEC <= 100
-#    define TIME_T long
-#  else
+#  if defined(WIN32) || defined(__WIN32__) // Windows下CLOCKS_PER_SEC定义为#define CLOCKS_PER_SEC ((clock_t)1000)。无法使用 <= 100 判断，直接使用 float
 #    define TIME_T float
+#  else
+#    if CLOCKS_PER_SEC <= 100
+#      define TIME_T long
+#    else
+#      define TIME_T float
+#    endif
 #  endif
 #endif
 
