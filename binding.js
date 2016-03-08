@@ -13,7 +13,8 @@ var buildModule = __dirname + '/build/Release/' + bindName + '.node';
 if (fs.existsSync(buildModule)) {
     try {
         module.exports = require(buildModule);
-    } catch (e) {
+    }
+    catch (e) {
         console.log('Cant\'t load `.node` module ' + buildModule);
         throw e;
     }
@@ -31,9 +32,10 @@ function compiler(a, b) {
     var max = Math.max(aArr.length, bArr.length);
 
     for (var i = 0; i < max; i++) {
-        if ((aArr[i] && !bArr[i])  || +aArr[i] > +bArr[i]) {
+        if ((aArr[i] && !bArr[i]) || +aArr[i] > +bArr[i]) {
             return 1;
-        } else if ((!aArr[i] && bArr[i]) || +aArr[i] < +bArr[i]) {
+        }
+        else if ((!aArr[i] && bArr[i]) || +aArr[i] < +bArr[i]) {
             return -1;
         }
     }
@@ -45,7 +47,7 @@ var pkgInf = require('./package.json');
 var bindingMap = pkgInf.bindingMap;
 var bugUrl = pkgInf['bugs'] ? (pkgInf['bugs']['url'] || '') : '';
 
-for ( var i in bindingMap)  {
+for (var i in bindingMap) {
     if (bindingMap.hasOwnProperty(i)) {
         var target = i;
         var versions = bindingMap[i];
@@ -54,10 +56,17 @@ for ( var i in bindingMap)  {
 
         if (compiler(versions[0], cur) <= 0 && compiler(versions[1], cur) >= 0) {
             try {
-                module.exports = require('./bindings/'+ process.platform + '/' + process.arch + '/' + target + '/' + bindName + '.node');
+                module.exports = require('./bindings/' + process.platform + '/' + process.arch + '/' + target + '/' + bindName + '.node');
                 return;
-            } catch ( e ) {
-                throw new Error('Can\'t load the addon. Issue to: ' + bugUrl + ' ' + e.stack);
+            }
+            catch (e) {
+                try {
+                    module.exports = require('./bindings/' + process.platform + '/' + process.arch + '/' + target + '/' + bindName + '.jumbo.node');
+                    return;
+                }
+                catch (e) {
+                    throw new Error('Can\'t load the addon. Issue to: ' + bugUrl + ' ' + e.stack);
+                }
             }
         }
     }
