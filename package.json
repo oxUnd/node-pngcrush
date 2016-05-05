@@ -22,6 +22,10 @@
     "4.0.0": [
       "4.0.0",
       "4.20.20"
+    ],
+    "6.0.0": [
+      "6.0.0",
+      "6.99.99"
     ]
   },
   "scripts": {
@@ -37,7 +41,7 @@
     "png"
   ],
   "devDependencies": {
-      "nan": "1.6.2"
+    "nan": "2.3.3"
   },
   "author": "xiangshouding <xiangshouding@baidu.com>",
   "license": "MIT",
