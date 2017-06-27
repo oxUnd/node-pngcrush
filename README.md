@@ -23,3 +23,9 @@ fs.readFile('./alphatest.png', function (err, data) {
 
 
 ```
+
+## 更新日誌
+
+### 0.4.0
+
+- Mac 下支持 Node 8.x 版本
