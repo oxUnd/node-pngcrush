@@ -1,4 +1,4 @@
-var _handle = require('./binding.js');
+var _handle = require('./scripts/util/binding.js')();
 
 function PngCompress(buffer) {
     this._option = '';

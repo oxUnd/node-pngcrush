@@ -1,40 +1,15 @@
 {
   "name": "node-pngcrush",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "The node-pngcrush is an addon of node, as a readable/writable stream",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "bindingMap": {
-    "0.8.0": [
-      "0.8.0",
-      "0.8.25"
-    ],
-    "0.9.9": [
-      "0.10.0",
-      "0.10.99"
-    ],
-    "0.12.0": [
-      "0.12.0",
-      "0.12.99"
-    ],
-    "4.0.0": [
-      "4.0.0",
-      "4.20.20"
-    ],
-    "6.0.0": [
-      "6.0.0",
-      "6.99.99"
-    ],
-    "8.0.0": [
-      "8.0.0",
-      "8.99.99"
-    ]
-  },
+  "repositoryName": "xiangshouding/node-pngcrush",
   "scripts": {
     "test": "node ./test/test.js",
-    "install": "echo \"Hello, World.\""
+    "install": "node ./scripts/install.js"
   },
   "repository": {
     "type": "git",
@@ -44,8 +19,12 @@
     "pngcrush",
     "png"
   ],
-  "devDependencies": {
-    "nan": "2.3.3"
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "nan": "^2.3.2",
+    "node-gyp": "^3.3.1",
+    "npmlog": "^4.0.0",
+    "request": "^2.79.0"
   },
   "author": "xiangshouding <xiangshouding@baidu.com>",
   "license": "MIT",
