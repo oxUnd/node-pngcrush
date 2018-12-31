@@ -1,6 +1,6 @@
 {
     "targets": [{
-        "target_name": "addon",
+        "target_name": "binding",
         "cflags": [
             "-g",
             "-I.",
@@ -39,8 +39,8 @@
             "src/pngcrush/pngwrite.c",
             "src/pngcrush/pngwtran.c",
             "src/pngcrush/pngwutil.c",
-            "src/binding.cpp",
-            "src/Compress.cpp"
+            "src/binding.cc",
+            "src/PCCompress.cc"
         ]
     }]
 }
