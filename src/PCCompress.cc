@@ -75,7 +75,7 @@ napi_value PCCompress::New(napi_env env, napi_callback_info info) {
 
       obj = new PCCompress(data, (const unsigned)length, line_args);
     } else {
-      napi_throw_error(env, "50000", "ERROR: invalid arguments, `new _handle.Pngquant(<Buffer>, <char *>)");
+      napi_throw_error(env, "50000", "ERROR: invalid arguments, `new _handle.Pngcrush(<Buffer>, <char *>)");
       return nullptr;
     }
 
