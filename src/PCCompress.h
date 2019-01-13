@@ -1,7 +1,7 @@
 #ifndef _H_OBJ_WRAP_H_
 #define _H_OBJ_WRAP_H_
 
-#include <png.h>
+#include "pngcrush/png.h"
 #include <node_api.h>
 
 class PCCompress {
