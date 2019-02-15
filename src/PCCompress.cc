@@ -1,4 +1,4 @@
-#include <png.h>
+#include "pngcrush/png.h"
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -55,7 +55,7 @@ napi_value PCCompress::New(napi_env env, napi_callback_info info) {
 
   if (is_constructor) {
     size_t argc = 2;
-    napi_value args[argc], jsthis;
+    napi_value args[2], jsthis;
     char *data;
     size_t length;
 
