@@ -1,3 +1,4 @@
+var semver = require('semver');
 var _handle = require('./scripts/util/binding.js')();
 
 function PngCompress(buffer) {
@@ -17,9 +18,9 @@ PngCompress.prototype = {
     },
     compress: function(buffer, cb) {
         if (cb) this._callback = cb;
-        if (process.versions.node >= '10.0.0') {
+        if (semver.gte(process.versions.node, '10.0.0')) {
             out = (new _handle.Pngcrush(buffer, this._option)).compress();
-        } else if (process.versions.node >= '4.0.0') {
+        } else if (semver.gte(process.versions.node, '4.0.0')) {
             out = new _handle(buffer, this._option).compress();
         } else {
             out = (new _handle.PngCompress()).compress(buffer, this._option, this._callback);

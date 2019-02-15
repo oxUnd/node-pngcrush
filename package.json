@@ -24,7 +24,8 @@
     "nan": "^2.3.2",
     "node-gyp": "^3.3.1",
     "npmlog": "^4.0.0",
-    "request": "^2.79.0"
+    "request": "^2.88.0",
+    "semver": "^5.6.0"
   },
   "author": "xiangshouding <xiangshouding@baidu.com>",
   "license": "MIT",
