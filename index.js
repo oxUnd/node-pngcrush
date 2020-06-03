@@ -1,5 +1,5 @@
 var semver = require('semver');
-var _handle = require('./scripts/util/binding.js')();
+var _handle = require('./scripts/binding.js')();
 
 function PngCompress(buffer) {
     this._option = '';

@@ -11,3 +11,5 @@ tmp
 *.tmp
 *.swp
 .DS_Store
+*_out.*
+package-lock.json
